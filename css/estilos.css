@@ -1,0 +1,89 @@
+/* Fonts ====================================== */
+   @import url(http://fonts.googleapis.com/css?family=Rosario:400,700);
+
+/* Reset ====================================== */
+    * { box-sizing:border-box; margin:0; padding:0; vertical-align:baseline; }
+
+
+/* Base ======================================= */
+    html { 
+        font-size:110%; 
+        font-family: 'Rosario', sans-serif;
+    }
+
+    body {
+        font:300 100% ;
+        background:white;
+        padding: 40px;
+        margin: 0 auto;
+        width: 90%;
+    }
+
+    h1, h2 {
+        text-transform:uppercase;
+    }
+    h1 {
+        font-size:1.9rem !important;
+    }
+    h2{
+       font-size:1.1rem !important; 
+    }
+
+    a {
+        text-decoration:none;
+        color:black;
+     }
+
+/* Header ===================================== */
+    header {
+        padding:1rem;
+    }
+
+/* Section =====================================*/
+    Section {
+       margin-top: 40px;
+    }    
+
+    /* Tabs ====================================*/
+
+    .ui-tabs-vertical .ui-tabs-nav { padding: .2em .1em .2em .2em; float: left; width: 15%; }
+    .ui-tabs-vertical .ui-tabs-nav li { clear: left; width: 100%; border-bottom-width: 1px !important; border-right-width: 0 !important; margin: 0 -1px .2em 0; }
+    .ui-tabs-vertical .ui-tabs-nav li a { display:block; }
+    .ui-tabs-vertical .ui-tabs-nav li.ui-tabs-active { padding-bottom: 0; padding-right: .1em; border-right-width: 1px; border-right-width: 1px; }
+    .ui-tabs-vertical .ui-tabs-panel { padding: 1em; float: right; width: 75%;  padding-left: 3em !important;}
+ 
+   .ui-tabs-panel img{
+      height: 200px;
+      width: 142px;
+   }
+   .foto{
+      float:left;
+      margin: 0 auto;
+      width: 185px;
+      margin-bottom: 20px;
+      top:0px;
+  }
+
+  .foto a.btn, .foto_pref a.btn_elim{
+      opacity: 0;
+      top: 120px;
+      left: 22px;
+  }
+  .pref {
+      float: right;
+      margin-bottom: 40px;
+  }
+  #preferidas, .ui-dialog{
+      display: inline;
+      overflow-y: auto;
+      overflow-x: none;
+      height: 550px !important;
+  }
+  #preferidas .foto_pref{
+      margin: 0 0 20px 40px;
+      float: left;
+      width: 185px;
+      display: inline-block;
+  }
+
+ 

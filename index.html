@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8">
+		<title>Mi colección de Pelis</title>
+		<link rel="stylesheet" href="css/estilos.css">
+		<link href="css/jquery-ui-1.10.3.custom.min.css" rel="stylesheet">
+		<script src="js/jquery-1.9.1.js"></script>
+		<script src="js/jquery-ui-1.10.3.custom.min.js"></script>		
+	</head>
+	<body>
+		<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/es_LA/all.js#xfbml=1";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+		<header>
+			<h1>Mi colección de Pelis</h1>
+
+			<h3>¿Cuál veré hoy?</h3>
+			<div class="fb-like" data-href="http://fcmsoft.github.io/pelis" data-width="450" data-show-faces="true" data-send="true">
+			</div>
+			<a href="#" class="pref" id="ver_preferidas">Preferidas</a>
+		</header>
+		<section id="content">
+			<div id="tabs">
+				<ul>
+				</ul>				
+			</div>
+		</section>
+		<div id="preferidas" title="Mis pelis preferidas">
+		</div>		
+	</body>
+</html>
+<script>
+	App =  [];
+	App.movies_pref = [];
+	App.movies = [];
+	App.moviesIDs = [];
+	/* obtengo todos los generos*/
+	$.getJSON('http://api.themoviedb.org/3/genre/list?api_key=84309c2984d544359d3ecbf8979c747c', function(data) {
+	  	$.each(data.genres, function(key, val) {
+	  		if(val.id!=2916){
+	    		$('#tabs ul').append('<li><a href="#p_'+val.id+'" id="'+val.id+'">' + val.name + '</a></li>');
+	    		$('#tabs').append('<div id="p_'+val.id+'"></div>');
+	    	}
+	  	});
+
+	 	$( '#tabs' ).tabs().addClass( "ui-tabs-vertical ui-helper-clearfix" );
+    	$( '#tabs li' ).removeClass( "ui-corner-top" ).addClass( "ui-corner-left" );
+    	$('#tabs ul li a').click(function(){
+			id = this.id;
+			/* obtengo todas las pelis del genero id */
+			$.getJSON('http://api.themoviedb.org/3/genre/'+id+'/movies?api_key=84309c2984d544359d3ecbf8979c747c', function(pelis) {
+			  	$.each(pelis.results, function(key, val) {
+			  			App.movies.push(val);
+			  			App.moviesIDs.push(val.id);
+			    	   	$('#p_'+id).append('<div class="foto" id="f_'+val.id+'"><a href="#" class="btn" id="'+val.id+'">Marcar</a><img src="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w154'+val.poster_path+'" title="'+val.title+'"></div>');
+			  	});
+			  	/*armar botones para agregar pelis a preferidos*/
+			  	$( ".btn" ).button().click(function( event ) {
+			  		if($.inArray(this.id,App.movies_pref) < 0) {
+			  			App.movies_pref.push(parseInt(this.id));
+			  			console.log(App.movies_pref);
+			  		}
+			  	});
+			  	$( ".foto" ).mouseenter(function() { 
+			  			$(this).find("a").css('opacity','1' );
+			  	});
+			  	$( ".foto" ).mouseleave(function() { 
+			  			$(this).find("a").css('opacity','0' );
+			  	});
+			});
+		});
+		/* muestro las pelis del primer genero de la lista */
+		$('#tabs ul li a:first').click();	
+		/* boton preferidos*/
+		$( ".pref" ).button();
+		$('#ver_preferidas').click( function(){
+			var val;
+			if(App.movies_pref.length > 0){
+				//borro todas y cargo de nuevo (es mas facil q agregar solo las nuevas)
+				$('.foto_pref').remove();
+				/* buscar y mostrar pelis preferidas en base a los ids en el array */
+				App.movies_pref.forEach(function(id) {
+					if((pos=$.inArray(id,App.moviesIDs)) >= 0) { 
+						val = App.movies[pos];
+						$('#preferidas').append('<div class="foto_pref" id="pf_'+val.id+'"><a href="#" class="btn_elim" id="e_'+val.id+'">Borrar</a><img src="http://d3gtl9l2a4fn1j.cloudfront.net/t/p/w154'+val.poster_path+'" title="'+val.title+'"></div>');
+					}
+			});
+			/*armar botones para eliminar pelis de preferidos*/
+			$( ".btn_elim" ).button().click(function( event ) {
+				var id = this.id.split('_');
+				var index = $.inArray(id[1],App.movies_pref);
+				if(index >= 0) {
+					App.movies_pref.splice(index, 1);
+					$('#pf_'+id[1]).remove();
+				}
+			});	
+			$( ".foto_pref" ).mouseenter(function() { 
+			  	$(this).find("a").css('opacity','1' );
+			  });
+			$( ".foto_pref" ).mouseleave(function() { 
+			  	$(this).find("a").css('opacity','0' );
+			  });
+			$('#preferidas').dialog({
+				width: 700,
+				heigth: 550,
+				modal: true,
+				resizable: false,
+			});
+
+
+		}
+		});
+	});
+</script>
