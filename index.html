@@ -62,7 +62,7 @@
 			  	});
 			  	/*armar botones para agregar pelis a preferidos*/
 			  	$( ".btn" ).button().click(function( event ) {
-			  		if($.inArray(this.id,App.movies_pref) < 0) {
+			  		if($.inArray(parseInt(this.id),App.movies_pref) < 0) {
 			  			App.movies_pref.push(parseInt(this.id));
 			  			console.log(App.movies_pref);
 			  		}
