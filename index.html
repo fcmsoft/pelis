@@ -92,9 +92,10 @@
 					}
 			});
 			/*armar botones para eliminar pelis de preferidos*/
-			$( ".btn_elim" ).button().click(function( event ) {
+			$( ".btn_elim" ).button().click(function( event ) { 
 				var id = this.id.split('_');
-				var index = $.inArray(id[1],App.movies_pref);
+				var index = $.inArray(parseInt(id[1]),App.movies_pref);
+				console.log(App.movies_pref);
 				if(index >= 0) {
 					App.movies_pref.splice(index, 1);
 					$('#pf_'+id[1]).remove();
